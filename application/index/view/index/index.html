@@ -7,28 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-    <table border="1" width="800px" align="center">
-        <tr>
-            <th>ID</th>
-            <th>parentid</th>
-            <th>name</th>
-            <th>parentpath</th>
-            <th>firstletter</th>
-            <th>type</th>
-            <th>create</th>
-        </tr>
 
-        {volist name="data" id="value"}
-            <tr>
-                <td>{$value.id}</td>
-                <td>{$value.parentid}</td>
-                <td>{$value.name}</td>
-                <td>{$value.parentpath}</td>
-                <td>{$value.firstletter}</td>
-                <td>{$value.type}</td>
-                <td>{$value.created}</td>
-            </tr>
-        {/volist}
-    </table>
 </body>
 </html>

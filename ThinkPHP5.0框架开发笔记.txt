@@ -1,0 +1,159 @@
+******************第一节***********************
+1.TP5.0框架
+    1.1 TP5.0框架开发
+    2.1 TP5.0核心技术
+    3.1 TP5.0 项目开发
+2.PHP框架
+    (1)TP3.2
+    (2)laravel
+    (3)Yii框架
+    (4)TP5.0框架
+3.TP 5.0
+    开源、快速、简单的面向对象的轻量级PHP开发框架
+4.检测TP 5.0的环境
+    (1).PHP >= 5.4.0
+    (2).PDO PHP Extension
+    (3).MBstring PHP Extension
+    (4).CURL PHP Extension
+5.安装
+    (1).源代码包安装
+        a.去thinkphp官网下载TP5.0核心文件
+        b.解压压缩包
+        c.将解压文件拷贝到WWW目录
+        d.通过PHP study访问 TP文件 public文件夹
+    (2).composer安装
+        a.composer安装官网(www.phpcomposer.com)
+            是用来管理PHP依赖关系的工具
+        b.下载composer
+        c.安装composer 安装至PHP工具中
+        d.检测composer安装是否安装成功
+            (1).进入命令行
+            (2).输入composer
+        e.安装TP5
+            (1).切换至PHP study根目录(WWW)
+            (2).切换国内镜像(国外镜像安装速度慢)
+                composer config -g repo.packagist composer http://packagist.phpcomposer.com
+            (3).安装TP 5.0
+                composer create-project topthink/think [文件夹名称->]tp5  --prefer-dist
+            (4).检测TP 5.0安装是否安装成功
+                a.通过PHP study访问 TP文件 public文件夹
+    (3).git安装TP 5.0
+        a.CMD切换至PHP study根目录(WWW)
+        b.输入 git clone https://github.com/top-think/think [文件夹名称->]tp5
+        c.切换至 TP5.0 目录下
+        d.拷贝核心框架代码
+            git clone https://github.com/top-think/framework thinkphp
+        e.检测TP 5.0安装是否安装成功
+            (1).通过PHP study访问 TP文件 public文件夹
+
+
+
+******************第二节***********************
+1.目录结构
+    |-appliccation  应用目录，是整个网站的核心
+    |---|---index 前台目录
+    |---|---|---controller 控制器
+    |---|---|---model 数据模型
+    |---|---|---view 页面
+    |---|---admin 后台目录
+    |-extend 扩展类库目录
+    |-public 静态资源和入口文件
+    |---|---static 用于存放静态资源 css、js、img
+    |---|---index.php 入口文件
+    |-runtime 网站运行临时目录
+    |-tests 测试目录
+    |-thinkphp TP框架的核心文件
+    |---|---lang 语言包
+    |---|---library TP框架的核心文件
+    |---|---tpl 模版页面
+    |-vendor 第三方扩展目录
+2.URL地址了解
+    http://www.tp.com/index.php/index/index/index
+    http://www.tp.com/   index.php  /index   /index  /index
+            域名           入口文件   前台     控制器   方法
+3.了解TP开发模式
+    (1).链接数据库(F:\PHPstudy\PHPTutorial\WWW\TP5\application\database.php)
+        // 数据库类型
+        'type'            => 'mysql',
+        // 服务器地址
+        'hostname'        => '127.0.0.1',
+        // 数据库名
+        'database'        => '',
+        // 用户名
+        'username'        => 'root',
+        // 密码
+    (2).开启调试模式(F:\PHPstudy\PHPTutorial\WWW\StudyTP5.0\application\config.php)
+        app_debug   -> ture;显示报错信息
+    (3).控制器中书写代码(F:\PHPstudy\PHPTutorial\WWW\StudyTP5.0\application\index\controller\index.php)
+        <?php
+            namespace app\index\controller;
+            // 引入系统数据类
+            use think\Db;
+            // 引入系统控制器类
+            use think\Controller;
+            class Index extends Controller
+            {
+                public function index()
+                {
+                    // return '<style type="text/css">*{ padding: 0; margin: 0; } .think_default_text{ padding: 4px 48px;} a{color:#2E5CD5;cursor: pointer;text-decoration: none} a:hover{text-decoration:underline; } body{ background: #fff; font-family: "Century Gothic","Microsoft yahei"; color: #333;font-size:18px} h1{ font-size: 100px; font-weight: normal; margin-bottom: 12px; } p{ line-height: 1.6em; font-size: 42px }</style><div style="padding: 24px 48px;"> <h1>:)</h1><p> ThinkPHP V5<br/><span style="font-size:30px">十年磨一剑 - 为API开发设计的高性能框架</span></p><span style="font-size:22px;">[ V5.0 版本由 <a href="http://www.qiniu.com" target="qiniu">七牛云</a> 独家赞助发布 ]</span></div><script type="text/javascript" src="https://tajs.qq.com/stats?sId=9347272" charset="UTF-8"></script><script type="text/javascript" src="https://e.topthink.com/Public/static/client.js"></script><think id="ad_bd568ce7058a1091"></think>';
+                    // 从数据库中读取数据
+                    $data = Db::table('coding_region')->select();
+                    // 分配数据给页面
+                    $this->assign('data',$data);
+                    return view();
+                }
+            }
+    (4).页面中(F:\PHPstudy\PHPTutorial\WWW\StudyTP5.0\application\index\view\index\index.html)
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <table border="1" width="800px" align="center">
+                <tr>
+                    <th>ID</th>
+                    <th>parentid</th>
+                    <th>name</th>
+                    <th>parentpath</th>
+                    <th>firstletter</th>
+                    <th>type</th>
+                    <th>create</th>
+                </tr>
+
+                {volist name="data" id="value"}
+                    <tr>
+                        <td>{$value.id}</td>
+                        <td>{$value.parentid}</td>
+                        <td>{$value.name}</td>
+                        <td>{$value.parentpath}</td>
+                        <td>{$value.firstletter}</td>
+                        <td>{$value.type}</td>
+                        <td>{$value.created}</td>
+                    </tr>
+                {/volist}
+            </table>
+        </body>
+        </html>
+4.MVC模式
+    M model 模型
+    V view  试图
+    C controller 控制器
+5.MVC在TP中如何体现？
+    (1).M (F:\PHPstudy\PHPTutorial\WWW\StudyTP5.0\application\index\model)
+        执行数据库相关处理
+    (2).V (F:\PHPstudy\PHPTutorial\WWW\StudyTP5.0\application\index\view)
+        展示页面
+    (3).C (F:\PHPstudy\PHPTutorial\WWW\StudyTP5.0\application\index\controller)
+        主要负责整个逻辑运转，核心
+6.MVC的变形模式
+    (1).MV模式(模型和控制器)
+        主要作用：用于接口开发(只需要返回JSON或XML数据，不需要页面展示，舍弃C层)
+    (2).VC(试图和控制器)
+        主要作用：单页面得网站(不需要从数据库中获取数据，舍弃M层)
+
+    

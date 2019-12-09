@@ -2,6 +2,7 @@
 namespace app\index\controller;
 // use app\admin\controller\Index as adminIndex;
 // use think\Db
+use  \think\Config;
 class Index
 {
     public function index()
@@ -15,7 +16,7 @@ class Index
 
     }
 
-
+// ******************第四节*方法调用和框架加载流程*************
     public function test(){
         return "我是用户自己创建的test方法";
     }
@@ -100,6 +101,96 @@ class Index
         echo "<br>";
         echo action('User/index');
         echo "<hr>";
+    }
+
+    // 调用后台模块的index方法
+    public function houtaimokuai()
+    {
+        // 传统方法
+        echo "传统方法";
+        echo "<br>";
+        $model = new \app\admin\controller\Index;
+        echo $model->index();
+        echo "<hr>";
+        // 系统方法
+        echo "系统方法";
+        echo "<br>";
+        echo action('admin/Index/index');
+
+    }
+
+
+// ******************第五节*配置相关(上)***********************
+    // 读取配置文件
+    public function getConfig()
+    {
+        // 直接通过键获取值 惯例配置
+        echo '惯例配置';
+        echo "<br>";
+        echo '直接通过键获取值';
+        echo "<br>";
+        // 输出配置文件  config()方法 用于读取系统方法
+        echo config('name');
+        echo "<br>";
+        echo config('age');
+        echo "<br>";
+        echo config('address');
+        echo "<br>";
+
+        // 通过系统类进行配置
+        // 如果配置项存在直接输出，不存在返回NULL
+        echo Config::get('name');
+        echo "<br>";
+        echo Config::get('age');
+        echo "<br>";
+        echo Config::get('address');
+        echo "<br>";
+
+
+        // 获取整个键值对数组
+        echo '获取整个键值对数组';
+        echo "<br>";
+        dump(config('teacher'));
+        echo "<br>";
+        echo '获取单个键值对数组元素';
+        echo "<br>";
+        dump(config('teacher.name'));
+        echo "<br>";
+        dump(config('teacher.age'));
+        echo "<br>";
+        dump(config('teacher.address'));
+
+
+        // 应用配置
+        echo "<hr>";
+        echo '应用配置';
+        echo "<br>";
+        dump(config('app_name.name'));
+
+
+        // 扩展配置
+        echo "<hr>";
+        echo '扩展配置';
+        echo "<br>";
+        echo '读取database所有配置项';
+        echo "<br>";
+        dump(config('database'));
+        echo '读取database单个配置项';
+        echo "<br>";
+        dump(config('database.hostname'));
+
+
+        // 自定义扩展配置
+        echo "<hr>";
+        echo '自定义扩展配置';
+        echo "<br>";
+        echo '读取user所有配置项';
+        echo "<br>";
+        dump(config('user'));
+        echo '读取user单个配置项';
+        echo "<br>";
+        dump(config('user.name'));
+
     }
 }
 

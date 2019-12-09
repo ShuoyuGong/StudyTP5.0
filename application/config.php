@@ -240,4 +240,14 @@ return [
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
+
+
+
+
+
+    // 自定义配置
+    'app_name' => [
+        'name' => '我是用户自己定义的配置',
+    ]
+
 ];

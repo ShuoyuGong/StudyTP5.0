@@ -3,6 +3,7 @@ namespace app\index\controller;
 // use app\admin\controller\Index as adminIndex;
 // use think\Db
 use  \think\Config;
+use  \think\Env;
 class Index
 {
     public function index()
@@ -120,7 +121,7 @@ class Index
     }
 
 
-// ******************第五节*配置相关(上)***********************
+// ******************第五节*配置相关(上\下)***********************
     // 读取配置文件
     public function getConfig()
     {
@@ -190,6 +191,45 @@ class Index
         echo '读取user单个配置项';
         echo "<br>";
         dump(config('user.name'));
+
+
+        // 自定义模块配置
+        echo "<hr>";
+        echo '自定义模块配置';
+        echo "<br>";
+        echo '读取前台模块配置项';
+        echo "<br>";
+        dump(config('index'));
+
+        // 自定义动态配置
+        echo "<hr>";
+        echo '自定义动态配置';
+        echo "<br>";
+        echo '通过系统方法进行配置';
+        echo "<br>";
+        dump(config('name','PHP开发'));
+        echo "<br>";
+        echo '通过系统类进行配置';
+        echo "<br>";
+        dump(\think\Config::set('name','WEB前端'));
+        echo "<br>";
+        dump(Config::set('name','JAVA'));
+
+        // 自定义环境变量配置
+        echo "<hr>";
+        echo '自定义环境变量配置';
+        echo "<br>";
+        echo '系统类';
+        // use  \think\Env;
+        dump(env::get('name'));
+        echo "<br>";
+        // echo '通过系统类进行配置';
+        // echo "<br>";
+        // dump(\think\Config::set('name','WEB前端'));
+        // echo "<br>";
+        // dump(Config::set('name','JAVA'));
+        
+        
 
     }
 }

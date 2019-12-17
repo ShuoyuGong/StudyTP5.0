@@ -510,5 +510,116 @@
         1.实现功能
             index.php入口文件只能去前台模块页面
             admin.php入口文件只能去后台模块页面
+        2.如何实现
+            a.在前台入口文件中写入，绑定前台模块
+                define('BIND_MODULE','index');
+            a.在后台入口文件中写入，绑定后台模块
+                define('BIND_MODULE','admin');
+        3.URL地址发生改变
+            a.入口绑定之前url地址
+                www.tp.com/入口文件/模块名/控制器/方法名
+                www.tp.com/Admin.php/Admin/index/index
+            b.入口绑定之后url地址
+                www.tp.com/入口文件/控制器/方法名
+                www.tp.com/Admin.php/index/index
+        4.隐藏入口文件
+            a.开启apace的重写(F:\PHPstudy\PHPTutorial\Apache\conf\httpd.conf)
+                把注释开启->LoadModule rewrite_module modules/mod_rewrite.so
+            b.设置访问权限
+            c.入口文件，在网站public目录下
+                1.新建文件.htaccess文件
+                2.写入
+                    <IfModule mod_rewrite.c>
+                        Options +FollowSymlinks -Multiviews
+                        RewriteEngine On
+
+                        RewriteCond %{REQUEST_FILENAME} !-d
+                        RewriteCond %{REQUEST_FILENAME} !-f
+                        RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
+                    </IfModule>
+            d.重启服务
+            f.url地址变化，已不需要写入口文件
+        5.TP5.0路由学习
+            a.支持3种方式的URL解析规则
+                1.普通模式
+                    a.定义：关闭路由，完全使用默认的PATH_INFO方式URL
+                    b.形式：http://www.tp.com:81/index.php/index/index/diaoyong
+                    c.如何配置
+                        // 是否开启路由
+                        'url_route_on'           => true,
+                        // 是否强制使用路由
+                        'url_route_must'         => false,
+                2.混合模式
+                    a.定义：开启路由，并使用路由定义+默认的PATH_INFO方式混合
+                    b.如何配置
+                        // 是否开启路由
+                        'url_route_on'           => true,
+                        // 是否强制使用路由
+                        'url_route_must'         => false,
+                3.强制模式
+                    a.定义：开启路由，并设置必须定义路由才能访问
+                    b.如何配置
+                        // 是否开启路由
+                        'url_route_on'           => true,
+                        // 是否强制使用路由
+                        'url_route_must'         => true,
+            b.路由只针对应用，不针对模块，因此路由的设置也是针对应用下面的所有模块
+            c.关闭后台路由
+                在后台写入以下代码，必须写在 加载框架引导文件  之后
+                // 关闭admin模块的路由
+                \think\App::route(false);
+        6.设置路由-动态单个注册
+            a.设置路由请求类型
+                1.get
+                    a.支持get请求(两种方式)
+                    b. // Route::rule('type','index/index/index','get');
+                    c.// Route::rule('type','index/index/index');
+                2.post
+                    a.支持post请求(两种方式)
+                    b. // Route::rule('type','index/index/index','post');
+                    c.// Route::post('type','index/index/index');
+                3.同时支持get和post方式
+                    // Route::post('type','index/index/index','get|post');
+                4.支持所有请求方式
+                    a.// Route::post('type','index/index/index','*');
+                    b.// Route::any('type','index/index/index','*');
+                4.put
+                5.delete
+                6.Route::rule()默认支持所有请求方式
+            b.设置路由的文件
+            c.如何设置
+                //1.静态地址路由
+                // // 引入系统类
+                // //设置路由之后，就不能用pathinfo访问
+                // use think\Route;
+                // Route::rule('/','index/index/index');
+                // Route::rule('test','index.php/index/index/test');
+            d.路由的形式
+                1.静态地址路由
+                2.注册带参数路由
+                    // Route::rule('test/:id','index.php/index/index/test');
+                    如果路由设置两个参数，必须设置两个参数的路由
+                    // Route::rule('test/:id/:name','index.php/index/index/test');
+                3.可选参数的路由
+                    // Route::rule('test/:id/[:name]','index.php/index/index/test');
+                4.全动态路由
+                    // Route::rule(':id/[:name]','index.php/index/index/test');
+                5.完全匹配路由
+                    // Route::rule('test$/::id/[:name]','index.php/index/index/test');
+                    如果写成http://www.tp.com:81/test1  可以成功访问
+                    如果写成http://www.tp.com:81/test1/waf/gds,如果test1后面写一些东西，则不能访问
+                6.路由额外带参数
+                    // Route::rule('test$/::id/[:name]','index.php/index/index/test?id=10&name=gsy');
+
+        7.设置路由-动态批量注册
+        8.设置路由-
+
+
+
+
+
+            
+
+
     
 

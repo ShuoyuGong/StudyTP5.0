@@ -18,3 +18,15 @@ if (is_file($_SERVER["DOCUMENT_ROOT"] . $_SERVER["SCRIPT_NAME"])) {
     }
     require __DIR__ . "/index.php";
 }
+//1.静态地址路由
+// // 引入系统类
+// //设置路由之后，就不能用pathinfo访问
+// use think\Route;
+
+// Route::rule('/','index/index/index');
+// Route::rule('test','index.php/index/index/test');
+
+
+// 给路由带参数
+// Route::rule('test/:id','index.php/index/index/test');
+

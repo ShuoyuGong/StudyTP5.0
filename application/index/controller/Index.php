@@ -19,7 +19,9 @@ class Index
     
 // ******************第四节*方法调用和框架加载流程*************
     public function test(){
-        return "我是用户自己创建的test方法";
+        echo input('id');
+        echo input('name');
+        dump(input());
     }
 
     public function diaoyong()
@@ -232,5 +234,22 @@ class Index
         
 
     }
+
+// ******************第八节*动态注册路由***************************
+    public function type()
+    {
+        dump(input());
+        return view();
+    }
+// ******************第九节*路由设置和url生成**********************
+    public function course()
+    {
+        dump(input());
+        echo input("id");
+    }
+
+
+
 }
+
 

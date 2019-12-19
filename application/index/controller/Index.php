@@ -4,7 +4,9 @@ namespace app\index\controller;
 // use think\Db
 use  \think\Config;
 use  \think\Env;
-class Index
+use  \think\Controller;
+use  \think\View;
+class Index extends Controller
 {
     public function index()
     {
@@ -250,14 +252,51 @@ class Index
 
 
 
+
+
+// ******************课堂**********************
+    public function tpl(){
+        // 定义数据
+        // $hi = "hello";
+        // 将变量绑定到模版
+        // $this->assign('hi',$hi);
+        $view = new View();
+        // $view->name = 'gsy';
+
+
+        // 将数组绑定在模版之上
+        // 定义数组
+        $arr=[
+            'name' => 'gsy',
+            'age'  => 19,
+            'sex'  => '男',
+            'collage'=> '河南职业技术学院',
+        ];
+        // 定义对象数据
+        $obj = json_decode(json_encode($arr));
+        $view->assign('obj',$obj);
+
+
+
+
+        
+        // 把数据渲染到页面
+        // return $this->fetch();
+        return $view->fetch();
+    }
+
+
+
+
+
+
+
+
 }
 
 
 
 
-// ******************课堂**********************
-    public function update(){
-        $res = 
-    }
+
 
 

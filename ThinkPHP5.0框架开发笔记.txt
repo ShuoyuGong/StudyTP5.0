@@ -637,15 +637,146 @@
                                 "test" => "index/index/test",
                                 "course/:id" => "index/index/course",
                             ]); 
-            c.使用配置文件进行批量注册
+            c.设置路由-使用配置文件进行批量注册
                 return [
                         "test" => "index/index/test",
                         "course/:id" => "index/index/course",
                     ];
-        8.设置路由-
+        8.变量规则
+            设置变量必须是1-3位的数字
+            Route::rule("course/:id","index/index/course",'get',[],['id'=>'\d{1,3}']);
+        9.路由参数
+            路由参数method，请求方式必须是get
+            路由参数ext，主要设置路由的后缀
+            Route::rule("course/:id","index/index/course",'get',['method'=>'get','ext'=>'html'],['id'=>'\d{1,3}']);
+        10.资源路由
+            a.后台功能
+                增加页面、展示页面、删除功能、修改页面、修改功能、增加功能
+            b.声明
+                Route::resource('blog','index/blog');
+            c.会自动注册7个路由规则
+                1.get     blog            index     后台展示
+                2.get     blog/create     create    添加页面
+                3.post    blog            save      增加操作
+                4.get     blog/:id        read      读取操作
+                5.get     blog/:id/edit   edit      修改页面
+                6.put     blog/:id        update    更新操作
+                7.delete  blog/:id        delete    删除操作
+        11.设置快捷路由
+            a.声明快捷路由
+                Route::controller('blog','index/blog');
+            b.控制器中
+                class Blog{
+                    public function index()
+                    {
+                        echo "我是Blog控制器中的index方法";
+                    }
+                    public function geta()
+                    {
+                        echo "aaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+                    }
+                }
+            c.URL访问
+                http://www.tp.com/blog/a
+        12.生成URL地址
+            a.系统类
+                dump(Url::build('index/index/index'));
+            b.系统方法
+                dump(url('index/index/index'));
+            c.使用
+                1.普通使用
+                    dump(Url::build('index/index/index'));
+                    dump(url('index/index/index'));
+                2.带参数
+                    dump(url('index/index/index/id/10'));
+                    dump(url('index/index/index',['id'=>5,'name'=>'gsy']));
+                    dump(url('index/index/index','id=10&name=gsy'));
+                3.带锚点
+                    dump(url('index/index/index#name'));
+                4.带域名
+                    dump(url('index/index/index@blog'));
+                5.加上入口文件
+                    Url::root('/index.php');
+                    dump(url('index/index/index@blog'));
+
+******************第十节*控制器初始化***************************
+1.注意： 
+    a.控制器文件名必须首字母大写，采用驼峰命名
+    b.控制器名必须跟文件名保持一致
+    c.命名空间必须和文件名对应
+    d.如果控制器名字采用驼峰命名->User_Info,必须加上下划线
+2.加载页面
+    a.系统View类
+        1.
+            // 实例化系统view类
+            $view = new \think\View;
+            return $view->fetch(); 
+        2.
+            use \think\View;
+            $view=new View();
+            return $view->fetch();  
+    b.系统Controller方法
+        继承系统Controller类
+        class User extends Controller{
+            public function load(){
+                return $this->fetch();
+            }
+        }
+    c.系统函数
+        return view()
+3.系统类
+    Config
+    Env
+    Controller
+    Route
+    Url
+4.系统方法
+    config()
+    view()
+    controller()
+    action()
+    url()
+    dump()
+    input()
+5.数据的输出
+    a.在应用配置文件中可以设置数据返回格式
+        'default_return_type' => 'html' 默认是html格式的数据
+    b.ajax请求的时候，如何返回数据
+        'default_ajax_return' => 'json' 默认是json格式的数据
+6.控制器的初始化
+    a.必须继承系统controller控制器
+    b.只要调用控制器下的任意方法，都会先找初始化方法
+    c.控制器初始化方法的使用
+        1.提取用来提取控制器下公共的代码
+        2.后台权限把控
+    d.
+    public function _initialize(){
+        echo "控制器初始化";
+    }
+7.前置操作
+    a.把一些公共的设置提取成方法进行调用
+    b.前置方法必须结合系统Controller控制器
+    c.核心设置
+         protected $beforeActionList = [
+            'one',
+            // 除去index1方法都可以使用two这个方法
+            'two'=>['except'=>'index'],
+            // 只让index1使用there这个方法
+            'three'=>['only'=>'index1'],
+        ];
+
+******************第十一节*页面跳转*****************************
+1.跳转方式
+    a.页面跳转基于系统Controller类，所以控制器必须继承Controller类
+    b.成功跳转
+        $this->success('跳转成功',url('index/index'));
+    c.失败跳转
+        $this->error('登陆失败');
+    d.修改成功失败的模板页面
+        
 
 
-
+ 
 
 
             

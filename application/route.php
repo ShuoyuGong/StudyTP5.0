@@ -9,16 +9,16 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-// return [
-//     '__pattern__' => [
-//         'name' => '\w+',
-//     ],
-//     '[hello]'     => [
-//         ':id'   => ['index/hello', ['method' => 'get'], ['id' => '\d+']],
-//         ':name' => ['index/hello', ['method' => 'post']],
-//     ],
+return [
+    '__pattern__' => [
+        'name' => '\w+',
+    ],
+    '[hello]'     => [
+        ':id'   => ['index/hello', ['method' => 'get'], ['id' => '\d+']],
+        ':name' => ['index/hello', ['method' => 'post']],
+    ],
 
-// ];
+];
 
 
 // 引入系统类 
@@ -85,9 +85,20 @@ use think\Route;
     // ]);
 
     // 使用配置文件进行批量注册
-    return [
-        "test" => "index/index/test",
-        "course/:id" => "index/index/course",
-    ];
+    // return [
+    //     "test" => "index/index/test",
+    //     "course/:id" => "index/index/course",
+    // ];
+
+    // 变量规则
+        // Route::rule("course/:id","index/index/course",'get',[],['id'=>'\d{1,3}']);
+    // 路由参数
+        // Route::rule("course/:id","index/index/course",'get',['method'=>'get','ext'=>'html'],['id'=>'\d{1,3}']);
         
+
+    // 声明资源路由
+        // Route::resource('blog','index/blog');
+    // 声明资源路由
+        // Route::controller('blog','index/blog');
+
     

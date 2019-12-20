@@ -275,6 +275,7 @@ class Index extends Controller
         // 定义对象数据
         $obj = json_decode(json_encode($arr));
         $view->assign('obj',$obj);
+        
 
 
 
@@ -293,7 +294,6 @@ class Index extends Controller
 
 
 }
-
 
 
 

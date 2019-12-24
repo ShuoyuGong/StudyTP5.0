@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="bootstrap.css">
+<script src="jquery-3.3.1.js"></script>
+<body>
+    <!-- 引用公共头部 -->
+    <div class="container">
+        {include file="public/header"}
+    </div>
+    
+    <div class="container">
+        {block name="left"} 左边内容 {/block}
+        {block name="right"} 右边内容{/block}
+    </div> -->
+
+    <!-- 引用公共底部 -->
+    <div class="container">
+        {include file="public/footer"}
+    </div>
+    <!-- <h1>asdf</h1> -->
+</body>
+</html>

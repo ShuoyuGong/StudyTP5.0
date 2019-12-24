@@ -6,9 +6,16 @@ class Goods{
         echo "我是Goods控制器index方法";
     }
     public function jiazai(){
-        // return view();
+        return view();
 
+        // $view = new View();
+        // return $view->fetch();
+    }
+    public function jiazai2(){
+        echo "afadsf";
+        // return view();
         $view = new View();
-        return $view->fetch();
+        // return $view->fetch();
+        return $view->fetch('E:\WAMP\www\StudyTP5.0\application\index\view\goods\jiazai2.html');
     }
 }

@@ -385,15 +385,51 @@ class Index extends Controller
 
 // ******************第十六节*数据库连接方法******************************
     public function dataSql(){
-        // 实例化系统数据库类
+        // // 实例化系统数据库类
         $db = new Db;
-        // 查询数据
+        // // 查询数据
+        // $data = $db::table("user_info")->select();
         
+
+        // 使用sql语句
+        $data = $db::query("select * from user_info");
+        dump($data);
+    }
+    // 使用数组方法配置数据库连接
+    public function arrSql(){
+        echo "使用方法配置数据库连接";
+        // 使用数组
+        $db = Db::connect([
+            // 数据库类型
+            'type'            => 'mysql',
+            // 服务器地址
+            'hostname'        => '127.0.0.1',
+            // 数据库名
+            'database'        => 'user',
+            // 用户名
+            'username'        => 'root',
+            // 密码
+            'password'        => 'yDUTtnzSXqGG0sM3',
+            // 端口
+            'hostport'        => '3308',
+        ]);
+        $data = $db->table("book_info")->select();
+        dump($data);
+    }
+    // 使用字符串方法配置数据库连接
+    public function stringSql(){
+        $db = Db::connect("mysql://root:yDUTtnzSXqGG0sM3@127.0.0.1:3308/user#utf8");
+        $data = $db->table("book_info")->select();
+        dump($data);
+    }
+    // 使用模型定义连接
+    public function modelSql(){
+        $user = new \app\index\model\User();
+        dump($user::all());
     }
 
-
-
-
+// ******************第十七节*数据库的传统操作方式(1)*******************************
+// User控制器
 
 
 
@@ -439,7 +475,7 @@ class Index extends Controller
         }
     }
 
-
+   
 
 
 

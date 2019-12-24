@@ -829,7 +829,7 @@
         2.输入 php think
         3.使用
             a.创建控制器
-                php think make:controller app\index\controller\Goods
+                php think make:controller app\index\controller\Fools
             b.创建数据模型
                 php think make:model app\index\model\Goods
             c.清空临时文件
@@ -1003,9 +1003,131 @@
 2.如何连接数据库
     a.配置文件定义
         1.database.php
-
+        2.如何使用
+             a.tp方法
+                public function dataSql(){
+                    // 实例化系统数据库类
+                    $db = new Db;
+                    // 查询数据
+                    $data = $db::table("user_info")->select();
+                    dump($data);
+                }
+            b.使用sql语句
+                $data = $db::query("select * from user_info");
     b.方法配置
+        1.使用数组
+            public function actionSql(){
+                echo "使用方法配置数据库连接";
+                // 使用数组
+                $db = Db::connect([
+                    // 数据库类型
+                'type'            => 'mysql',
+                // 服务器地址
+                'hostname'        => '127.0.0.1',
+                // 数据库名
+                'database'        => 'user',
+                // 用户名
+                'username'        => 'root',
+                // 密码
+                'password'        => 'yDUTtnzSXqGG0sM3',
+                // 端口
+                'hostport'        => '3308',
+                ]);
+                $data = $db->table("book_info")->select();
+                dump($data);
+            }
+        2.使用字符串
+            Db::connect("数据库类型://用户名:密码@数据库地址:数据库端口/数据库名字#字符集");
+        3.如何使用
+            public function stringSql(){
+                $db = Db::connect("mysql://root:yDUTtnzSXqGG0sM3@127.0.0.1:3308/user#utf8");
+                $data = $db->table("book_info")->select();
+                dump($data);
+            }
     c.模型类定义
-3.基本使用
-    a.查
-        
+        1.创建数据模型
+            a.命令行创建
+                1.切换到项目目录
+                2.执行命令
+                    php think make:model app\index\model\User
+            b.手动创建
+                1.打开数据模型目录
+                    application\index\model
+                2.在目录下新建User.php文件
+                3.在文件中书写代码
+                    <?php
+                    namespace app\index\model;
+
+                    use think\Model;
+
+                    class User extends Modle{
+                        // 
+                    }
+        2.如何设置
+            a.使用数组配置连接
+                <?php
+                    namespace app\index\model;
+
+                    use think\Model;
+
+                    class User extends Model{
+                        // 使用数组配置连接
+                        protected $connction = [
+                            // 数据库类型
+                            'type'            => 'mysql',
+                            // 服务器地址
+                            'hostname'        => '127.0.0.1',
+                            // 数据库名
+                            'database'        => 'user',
+                            // 用户名
+                            'username'        => 'root',
+                            // 密码
+                            'password'        => 'yDUTtnzSXqGG0sM3',
+                            // 端口
+                            'hostport'        => '3308',
+                        ];
+                    }
+            b.使用字符串配置连接
+                protected $connctin = "mysql://root:yDUTtnzSXqGG0sM3@127.0.0.1:3308/user#utf8";
+        3.如何在控制器中使用
+            public function modelSql(){
+                $user = new \app\index\model\User();
+                dump($user::all());
+            }
+
+******************第十七节*数据库的传统操作方式(1)*******************************
+1.数据库的基本使用
+    a.增加(返回受影响行数)
+        public function insert(){
+            
+            $data = Db::execute("insert into user_info value(3,'syh','女','河南职业')");
+            $data = Db::execute("insert into user_info value(4,?,?,?)",["ccw","女","职业"]);
+            $data = Db::execute("insert into user_info value(5,:name,:sex,:address)",['name'=>'gsyyy','sex'=>'男','address'=>'职业学院']);
+            dump($data);
+        }
+    b.修改(返回受影响行数)
+        public function update(){
+            $data = Db::execute("update user_info set name = 'lpz' where id = 15");
+            $data = Db::execute("update user_info set name = 'lpz' where id = ?",[15]);
+            $data = Db::execute("update user_info set name = 'lpz' where id = :id",['id'=>15]);
+            dump($data);
+        }
+    c.删除(返回受影响行数)
+        public function delete(){
+            $data = Db::execute("delete from user_info where id < 6");
+            $data = Db::execute("delete from user_info where id > ?",[5]);
+            $data = Db::execute("delete from user_info where id <= :id",['id'=>10]);
+            dump($data);
+        }
+    d.查看
+        public function select(){
+            // 使用系统类
+            // $data = Db::query("select * from user_info");
+            $data = Db::query("select * from user_info where id >= ? and id <= ?",[0,5]);
+            dump($data);
+            // 获取最后执行的sql语句
+            echo Db::getLastSql();
+        }
+    e.获取最后执行的sql语句
+        Db::getLastSql();
+    f.实现用户模块

@@ -9,6 +9,6 @@ class Goods{
         // return view();
 
         $view = new View();
-        return $view;
+        return $view->fetch();
     }
 }

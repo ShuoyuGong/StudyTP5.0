@@ -8,5 +8,31 @@
 </head>
 <body>
     <h1>我是{$obj:name},今年{$obj:age},性别是{$obj:sex},在{$obj:collage}上学</h1>
+    <hr>
+    <h1>转大写：{$obj:name|strtoupper}</h1>
+    <hr>
+    <h1>字母字符串截取：{$obj:name|substr=1,1}</h1>
+    <hr>
+    <h1>中文字符串截取：{$obj:collage|mb_substr=3,3}</h1>
+    <hr>
+    <h1>首字母大写：{$obj:name|ucfirst}</h1>
+    <hr>
+    <h1>多次调节：{$obj:name|strtoupper|mb_substr=0,1}</h1>
+    <hr>
+    <h1>原样输出:
+        {literal}
+            {$obj:name|strtoupper|mb_substr=0,1}
+        {/literal}
+    </h1>
+    <hr>
+    <h1>直接访问常量</h1>
+    <br>
+    <h1>APP_PATH------------->{$Think.APP_PATH}</h1>
+    <br>
+    <h1>THINK_PATH------------->{$Think.THINK_PATH}</h1>
+    <br>
+    <h1>CORE_PATH------------->{$Think.CORE_PATH}</h1>
+    <br>
+    <h1>VENDOR_PATH------------->{$Think.VENDOR_PATH}</h1>
 </body>
 </html>

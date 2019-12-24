@@ -6,6 +6,8 @@ use  \think\Config;
 use  \think\Env;
 use  \think\Controller;
 use  \think\View;
+use  \think\Request;
+use  \think\Db;
 class Index extends Controller
 {
     public function index()
@@ -250,6 +252,149 @@ class Index extends Controller
         echo input("id");
     }
 
+// ******************第十三节*获取请求类和URL基本信息***************
+    public function request(Request $request){
+        // // 使用系统方法
+        // $request = request();
+        // // TP request类
+        // $request = Request::instance();
+        // // 使用系统控制器类
+        dump($request);
+    }
+    public function getUrl(Request $request){
+        // 获取域名
+        dump($request->domain());
+        // 获取url地址
+        dump($request->url());
+        // 获取入口文件
+        dump($request->baseFile());
+        // 获取pathinfo路径
+        dump($request->pathInfo());
+        // 获取不带后缀的path
+        dump($request->path());
+        // 只获取Url伪静态后缀
+        dump($request->ext());
+    }
+    // 获取信息
+    public function getInfo(Request $request){
+        // 当前模块信息
+        dump($request->module());
+        // 当前控制器
+        dump($request->controller());
+        // 当前方法名
+        dump($request->action());
+    }
+
+
+
+
+// ******************第十四节*输入变量******************************
+    public function getType(Request $request){
+        // 请求类型
+        dump($request->method());
+
+        // 资源类型
+        dump($request->type());
+
+        // 访问地址
+        dump($request->ip());
+
+        // 判断是否ajax请求
+        dump($request->isAjax());
+
+        // 获取请求参数
+        dump($request->param());
+    
+        // 获取特定字段参数
+        dump($request->only(['name']));
+
+        // 剔除某些字段
+        dump($request->except(['name']));
+    }
+    public function isajax(){
+        return view();
+    }
+    // 获取地址栏变量
+    public function getData(Request $request){
+        // 判断get请求类型的中的id是否存在
+        dump($request->has('id','get'));
+        dump(input('?get.id'));
+
+        // 读取变量
+        dump($request->get('id'));
+        dump(input('get.id'));
+
+        // 读取所有变量
+        dump($request->get());
+        dump(input('get.'));
+    }
+    // 变量过滤
+    public function reg(){
+        return view();
+    }
+    public function guolv(Request $request){
+        dump(input('post.'));
+        // 转实体 过滤一次
+        // $request->filter("htmlspecialchars");
+        // 多种方法过滤
+        // $request->filter(["htmlspecialchars","strip_tags"]);
+        // 针对get参数过滤
+        // dump($request->post('text','','htmlspecialchars,md5'));
+        // 获取变量'user'
+        dump($request->only('user'));
+        // 排除变量'user'
+        dump($request->except('user'));
+        // 排除post类型下的变量'user'
+        dump($request->except('user','post'));
+        // dump(input('post.'));
+    }
+    // 变量的修饰符
+    public function xiushi(Request $request){
+        dump(input('get.id/d'));//强制转换整形
+        dump(input('get.name/s'));//强制转换为字符串
+        dump($request->get('id/d'));
+    }
+    // 更改变量
+    public function changeData(Request $request){
+        dump($request->get('id'));
+        dump($request->get(['id'=>20]));
+    }
+    // 类型
+    public function iftype(Request $request){
+        dump($request->isGet());
+        dump($request->isPost());
+        dump($request->isPut());
+        dump($request->isDelete());
+        dump($request->isAjax());
+    }
+    //模拟put、delete请求
+    public function main(){
+        return view();
+    }
+    // 伪静态
+    public function jingtai(Request $request){
+        // echo url('index/index');
+        // dump($request->ext());
+        dump($this->main());
+    }
+    // 参数绑定
+    public function bangding($id,$name){
+        dump($id);
+        dump($name);
+    }
+
+// ******************第十六节*数据库连接方法******************************
+    public function dataSql(){
+        // 实例化系统数据库类
+        $db = new Db;
+        // 查询数据
+        
+    }
+
+
+
+
+
 
 
 
@@ -275,9 +420,6 @@ class Index extends Controller
         // 定义对象数据
         $obj = json_decode(json_encode($arr));
         $view->assign('obj',$obj);
-        
-
-
 
 
         
@@ -287,13 +429,22 @@ class Index extends Controller
     }
 
 
-
+    public function a(){
+        return view();
+    }
+    public function b(Request $request){
+        $id = $request->get('id');
+        if($id == 1){
+            $this->redirect('index/a');
+        }
+    }
 
 
 
 
 
 }
+
 
 
 

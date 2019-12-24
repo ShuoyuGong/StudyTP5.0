@@ -840,13 +840,172 @@
         2.资源控制器一般配合资源路由的使用
 
 ******************第十三节*获取请求类和URL基本信息*****************************
+1.系统类
+    a.Config
+    b.Controller
+    c.Env
+    d.Route
+    e.Url
+    f.View
+    e.Request
+2.系统方法
+    a.controller();调用控制器
+    b.dump();格式化输出
+    c.config();读取和设置配置文件
+    d.action();调用方法
+    e.url();生成url地址
+    f.view();加载页面
+    g.request();实例化请求类
+3.如何获取请求类
+    a.系统函数
+        $request=request();
+        print_r($request);
+    b.TP Request类
+        1.use think\Request;
+          因为Request属于单例模式，所以不能直接new实例化
+          $request=Request::instance();
+        2.use think\Request;
+          use think\Controller;
+          方法的书写
+          class Index extends Controller{
+              public function request(Request $request){
+                  dump($request);
+              }
+          }
+    c.获取请求信息
+        1.// 获取域名
+        dump($request->domain());
+        2.// 获取url地址
+        dump($request->url());
+        3.// 获取入口文件
+        dump($request->baseFile());
+        4.// 获取pathinfo路径
+        dump($request->pathInfo());
+        5.// 获取不带后缀的path
+        dump($request->path());
+        6.// 只获取Url伪静态后缀
+        dump($request->ext());
+        7.伪静态
+            就是将路径伪装成静态页面，让搜索引擎更好收录网站，防止用户知道网站的真实开发语言
+    d.获取请求模块\控制器\方法
+        // 当前模块信息
+        dump($request->module());
+        // 当前控制器
+        dump($request->controller());
+        // 当前方法名
+        dump($request->action()); 
+    e.获取请求相关类型
+        1.请求类型
+            dump($request->method());
+        2.请求资源类型
+            dump($request->type());
+        3.访问地址
+            dump($request->ip());
+        4.是否ajax请求
+            dump($request->isajax());
+        5.获取请求参数
+            dump($request->param());
+        6.获取特定字段参数
+            dump($request->only(['name']));
+        7.剔除某些字段
+            dump($request->except(['name']));
+******************第十四节*输入变量********************************************
+1.获取变量
+    a.-判断get请求类型的中的id是否存在
+        dump($request->has('id','get'));
+        dump(input('?get.id'));
+    b.读取变量
+        dump($request->get('id'));
+        dump(input('get.id'));
+    c.读取所有变量
+        dump($request->get());
+        dump(input('get.'));
+    d.可以读取的数据类型
+        get/post/delete/put/session/cookie/server等
+    e.变量过滤
+        1.作用
+            防止恶意输入，防止sql注入
+        2.使用
+            a.转实体，单个方法过滤
+                $request->filter("htmlspecialchars");
+            b.多种方法过滤
+                $request->filter(["htmlspecialchars","strip_tags"]);
+            c.针对post参数过滤,转实体+md5加密
+                dump($request->post('text','','htmlspecialchars,md5'));
+    e.变量的获取和排除
+        1.获取变量'user'
+            dump($request->only('user'));
+        2.排除变量'user'
+            dump($request->except('user'));
+        3.排除post类型下的变量'user'
+            dump($request->except('user','post'));
+    f.变量的修饰符
+        1.修饰变量的类型
+            s   强制转换为字符串类型
+            d   强制转换为整型类型
+            b   强制转换为布尔类型
+            a   强制转换为数组类型
+            f   强制转换为浮点类型
+        2.使用
+            input('get.id/d');强制转换为整型类型
+            input('post.name/s');强制转换为字符串类型
+    g.更改变量
+        dump($request->get(['id'=>20]));
+    h.判断请求类型
+        1.dump($request->isGet());
+        2.dump($request()->isGet());
+******************第十五节*模拟请求及参数绑定************************************
+1.模拟put、delete请求
+    a.使用
+        <form action="{:url('iftype')}" method="post">
+            <p>User:
+                <input type="text" name="user">
+                ****<input type="hidden" name="_method" value="DELETE">***
+            </p>
+            <p>Pass
+                <input type="password" name="pwd">
+            </p>
+            <p>
+                <input type="submit" value="提交">
+            </p>
+        </form>
+    b.注意：
+        1.表单的请求类型必须是post
+        2.需要设置隐藏域传递模拟请求类型
+2.模拟ajax和pjax请求
+    a.ajax
+        http://www.tp.com/index/iftype.html?_ajax=1
+    b.pjax
+        http://www.tp.com/index/iftype.html?_pjax=1
+3.伪静态
+    a.作用
+        1.URL伪静态通常是为了满足更好的SEO效果
+        2.为了网站的安全
+    b.修改伪静态
+        在配置文件中进行修改
+            // URL伪静态后缀
+            'url_html_suffix'        => 'html',
+4.参数绑定
+    a.使用
+        public function bangding($id,$name="admin"){
+            dump($id);
+            dump($name);
+        }
+    b.http://www.tp.com/index/bangding/id/1/name/gsy
+    c.注意：
+        1.参数绑定的个数少于地址栏参数的个数
+        2.参数绑定的名字必须和地址栏一一对应
+        3.可以设置默认值
 
+******************第十六节*数据库的链接方式*******************************
+1.TP支持的数据库类型
+    Mysql、SqlServer、PgSQl、Sqlite
+2.如何连接数据库
+    a.配置文件定义
+        1.database.php
 
- 
-
-
-            
-
-
-    
-
+    b.方法配置
+    c.模型类定义
+3.基本使用
+    a.查
+        

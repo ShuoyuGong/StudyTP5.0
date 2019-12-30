@@ -26,14 +26,23 @@
                     <th>Address</th>
                     <th>Edit</th>
                     <th>Delete</th>
+                    <th>AJAX Delete</th>
                     {volist name = "data" id = "value"}
                     <tr>
                         <td>{$value.id}</td>
                         <td>{$value.name}</td>
                         <td>{$value.sex}</td>
                         <td>{$value.address}</td>
-                        <td><a href="">修改</a></td>
-                        <td><a href="">删除</a></td>
+                        <td><a href="/user/{$value.id}/edit">修改</a></td>
+                        <td>
+                            <form action="/user/{$value.id}" method="post">
+                                <input type="hidden" name="_method" value="delete">
+                                <button class="btn btn-danger">删除</button>
+                            </form>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" onclick="del(this,{$value.id})">AJAX DELETE</button>
+                        </td>
                     </tr>
                     {/volist}
                 </table>
@@ -44,5 +53,20 @@
     <script src="__STATIC__/popper.js"></script>
     <script src="__STATIC__/bootstrap.js"></script>
     <script src="__STATIC__/jquery-3.3.1.js"></script>
+    <script>
+        function del(obj,id){
+            // 发送sql语句
+            $.post('{:url("ajax_del")}',{id:id},function(data){
+                // 判断是否成功
+                if(data.status == 200){
+                    // alert(data.info);
+                    $(obj).parent().parent().remove();
+                }else{
+                    alert(data.info);
+                }
+            });
+           
+        }
+    </script>
 </body>
 </html>

@@ -1131,3 +1131,6 @@
     e.获取最后执行的sql语句
         Db::getLastSql();
     f.实现用户模块
+        1.在命令行找到项目目录，新建资源控制器
+            php think make:controller app\index\controller\Users
+        2.写资源路由

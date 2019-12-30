@@ -11,11 +11,14 @@ class Goods{
         // $view = new View();
         // return $view->fetch();
     }
-    public function jiazai2(){
-        echo "afadsf";
-        // return view();
-        $view = new View();
+    public function aaa(){
+        // echo "afadsf";
+        return view();
+        // $view = new View();
         // return $view->fetch();
-        return $view->fetch('E:\WAMP\www\StudyTP5.0\application\index\view\goods\jiazai2.html');
+        // return $view->fetch('E:\WAMP\www\StudyTP5.0\application\index\view\goods\jiazai2.html');
     }
+    // public function aaa(){
+    //     return view();
+    // }
 }

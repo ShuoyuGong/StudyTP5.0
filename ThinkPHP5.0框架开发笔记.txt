@@ -1095,7 +1095,7 @@
                 dump($user::all());
             }
 
-******************第十七节*数据库的传统操作方式(1)*******************************
+******************第十七节*数据库的传统操作方式(1/2)*******************************
 1.数据库的基本使用
     a.增加(返回受影响行数)
         public function insert(){
@@ -1134,3 +1134,84 @@
         1.在命令行找到项目目录，新建资源控制器
             php think make:controller app\index\controller\Users
         2.写资源路由
+            详见users控制器
+            // 资源路由
+            Route::resource('user','index/users');
+
+*****************************************第十九节*数据库查询操作(1)*************************************
+1.查询操作
+    a.table方法
+        1.查询所有数据
+            $data = Db::table("user_info")->select();
+        2. 查询一条数据
+            $data = Db::table("user_info")->find();
+    b.name方法查询数据
+        1.name方法会自动添加数据库配置中的表前缀
+        2. 查询所有数据
+            $data = Db::name("info")->select();
+        3.查询一条数据
+            $data = Db::name("info")->find();
+    c.助手函数db
+        1.助手函数db会自动添加数据库配置中的表前缀
+            $data = db('info')->select();
+            $data = db('info')->find();
+    d.where条件匹配
+        1.查询id大于5和id小于12的数据
+            $data = Db::table('user_info')->where("id",">",5)->where("id","<",12)->select();
+        2.查询name包含字符s的数据
+            $data = Db::table('user_info')->where("name","like","%s%")->select();
+        3.查询名字等于龚烁宇和性别等于男和id等于10的数据
+            $data = Db::table("user_info")->where("name","龚烁宇")->where("sex","男")->where("id","10")->select();
+    e.whereOr(或)匹配
+        1.查询id大于等于5或id小于等于11的数据
+            $data = Db::table("user_info")->where("id",">=",5)->whereOr("id","<=",11)->select(
+        2.查询name包含gsy或name包含syh的数据
+            $data = Db::table("user_info")->where("name","like","%gsy%")->whereOr("name","like","syh")->select();
+    f.limit截取数据
+        1.获取整个表前两条数据
+            $data = Db::name('info')->limit(2)->select();
+        2.获取从2条数据之后的两条数据
+            $data = Db::name('info')->limit(2,2)->select();
+    g.order排序
+        1.获取到的数据倒序
+            $data = Db::name('info')->order("id","desc")->select();
+    h.field设置查询字段
+        1.查询user_info表内name，sex字段
+            $data = Db::name('info')->field("name,sex")->select();
+        2.使用sql自带函数获取表内共有多少条数据
+            $data = Db::name('info')->field("count(*) as tot")->select();
+        3.使用数组键值对查询字段name命名为uname,sex字段
+            $data = Db::name('info')->field(['name'=>'uname','sex'])->select();
+        4.使用数组进行sql系统函数获取表内共有多少数据，并起别名为tot
+            $data = Db::name('info')->field(['count(*)' => 'tot'])->select();
+        5.查询除去name,sex字段之外所有字段的所有数据
+            $data = Db::name('info')->field("name,sex",true)->select();
+            $data = Db::name('info')->field(['name','sex'],true)->select();
+    i.page实现分页效果
+        1.page("2,5") = 每页展示5条数据并展示第二页
+            $data = Db::name('info')->page("1,5")->select();
+    j.group分组聚合
+        1.根据name分组并计算每组共有多少条数据
+            $data = Db::name('info')->field("name,count(*) tot")->group("name")->select();
+    l.having过滤
+        1.根据name分组并计算每组共有多少条数据之后并展示每组大于4条数据的组
+            $data = Db::name('info')->field("name,count(*) tot")->group("name")->having("tot >= 4 ")->select();
+        2.注意：having只能结合group分组使用
+    
+*****************************************第二十节*数据库查询操作(2)*************************************
+1.多表查询
+    a.查询商品信息表所有数据和商品名表中的name字段并起别名为cname,条件为商品信息表的cid字段等于商品名表中的id字段
+        $data = Db::query("select commodity_info.*,commodity_name.name cname from commodity_name,commodity_info where commodity_info.cid = commodity_name.id");
+    b. 使用右连接方式查询商品信息表所有数据和商品名表中的name字段并起别名为cname,条件为商品信息表的cid字段等于商品名表中的id字段
+        $data = Db::name("commodity_info")->field("commodity_info.*,commodity_name.name cname")->join("commodity_name","commodity_info.cid = commodity_name.id",'right')->select();
+    c.给表起别名 alias方法 查询商品信息表所有数据和商品名表中的name字段并起别名为cname,条件为商品信息表的cid字段等于商品名表中的id字段
+        $data = Db::name("commodity_info")->alias("i")->field("i.*,n.name cname")->join("commodity_name n","i.cid = n.id",'right')->select();
+    d.合并多个select语句的结果集 union方法
+        1.注意： 
+            a.必须由两条或者两条以上的select语句组成，语句之间用关键字union分隔
+            b.每个查询中必须包含相同的列，表达式或聚集函数(顺序可以不同)
+            c.列数据类型必须兼容，类型不必完全相同，但必须是DBMS可以隐含地转换的类型。
+        2.
+            $data = Db::field("name")->table("commodity_name")->union("select name from commodity_info")->select();
+        
+

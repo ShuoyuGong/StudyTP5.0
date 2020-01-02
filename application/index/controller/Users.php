@@ -45,7 +45,9 @@ class Users extends Controller
         //接收数据
         $data = input("post.");
         //执行数据库插入
-        $code = Db::execute("INSERT INTO `user_info`( `id`,`name`, `sex`, `address`) VALUES (null,:name,:sex,:address)",$data);
+        // for ($i=0; $i < 100; $i++) { 
+            $code = Db::execute("INSERT INTO `user_info`( `id`,`name`, `sex`, `address`) VALUES (null,:name,:sex,:address)",$data);
+        // }
         $this->ifSQL($code);
     }
 

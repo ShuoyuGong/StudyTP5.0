@@ -134,5 +134,30 @@ class   Select
         dump($data);
     }
 
+    // bind绑定参数
+    public function bind(){
+        $id = input("id");
+        // 尽量不要用原生mysql语句，会对数据产生不安全性操作
+        // $data = Db::execute("delete from commpdity_info where id = $id");
+        $data = Db::table("commodity_info")->where("id",":id")->bind(["id"=>[$id,\PDO::PARAM_INT]])->delete();
+        echo Db::getLastSql();
+        dump($data);
+    }
+
+    // 统计最大值最小值
+    public function aaa(){
+        // 最大值
+        $data = Db::table("user_info")->max("age");
+        // 最小值
+        $data = Db::table("user_info")->min("age");
+        // 平均值
+        $data = Db::table("user_info")->avg("age");
+        // 求和
+        $data = Db::table("user_info")->sum("age");
+        // 统计条数
+        $data = Db::table("user_info")->count("age");
+        dump($data);
+    }
+
 
 }

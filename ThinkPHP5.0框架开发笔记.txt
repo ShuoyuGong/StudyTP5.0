@@ -1353,5 +1353,28 @@
             // 故意写错方法，删除数据
             Db::table("user_info")->dete();
         });
-    b.手动控制事务
+    b.手动控制事务 database/transaction
+      // 开启事务
+      Db::startTrans();
+      // 书写事务
+      try {
+        // 删除user_info表中id等于20的数据
+        $a = Db::table("user_info")->delete(10);
+        // 删除不存在的数据
+        $b = Db::table("user_info")->delete(60);
+        // 判断数据是否删除成功
+        if (!$b) {
+          // 抛出异常 可通过getMassage接收
+          throw new \Exception("删除id60的数据没有成功");
+        }
+        // 如果两个删除指令都执行成功之后 执行提交操作
+        Db::commit();
+        echo "删除命令执行完毕";
+      } catch (\Exception $e) {
+        // 回滚事务
+        Db::rollback();
+        echo "删除命令执行失败";
+        dump($e);
+        dump($e->getMessage());
+      }
         
